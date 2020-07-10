@@ -1,0 +1,151 @@
+{% extends "blog/base.html" %}
+{% load static %}
+
+{% block title %}Notificatin Detail{% endblock %}
+
+{% block body %}
+{% if user.is_authenticated %}
+
+<body>
+
+<h1 style="color:yellow;font-size: 48px; text-align:center">Notification Question</h1>
+
+
+<div class="container ctr">
+
+<div class="movie_card card " id="bright">
+  <div class="info_section">
+    <div class="movie_header">
+      {% if notification.Question.tags == 0 %}  <img class="locandina" img src="{% static "blog/0.jpg" %}" alt="My image"  />
+      {% elif notification.Question.tags == 1 %}<img class="locandina" img src="{% static "blog/1.jpg" %}" alt="My image"  />
+      {% elif notification.Question.tags == 2 %}<img class="locandina" img src="{% static "blog/2.jpg" %}" alt="My image"  />
+      {% elif notification.Question.tags == 3 %}<img class="locandina" img src="{% static "blog/3.jpg" %}" alt="My image"  />
+      {% elif notification.Question.tags == 4 %}<img class="locandina" img src="{% static "blog/4.jpg" %}" alt="My image"  />
+      {% elif notification.Question.tags == 5 %}<img class="locandina" img src="{% static "blog/5.jpg" %}" alt="My image"  />
+      {% endif %}
+      <h1>{{notification.Question.title }}</h1>
+        <h4>by.- <a href="{% url 'blog:userinfo' user.username notification.User.username %}">{{notification.Question.User}}</a></h4>
+      <span class="minutes">
+          {% if not b %}
+            <a href = "{% url 'blog:nremovebookmark' notification.id  user.username %}"><img src="{% static "blog/bookmark.png" %}" alt="My image" width="25" height="25" ></a><br>
+       {% else %}
+            <a href = "{% url 'blog:nbookmark' notification.id  user.username %}"> <img src="{% static "blog/Unbookmark.png" %}" alt="My image" width="25" height="25" ></a><br>
+      {% endif %}
+
+      </span>
+
+        {% if user.username == notification.Question.User.username %}
+            &nbsp&nbsp
+            <button type="button" class="btn btn-default btn-sm">
+                <a href="{% url 'blog:deleteques' notification.Question.id user.username 4 %}" style="text-decoration: none;"><i class="fas fa-trash"></i></a>
+            </button>
+        {% endif %}
+        &nbsp&nbsp
+
+
+ <a href="{% url 'blog:ssearch' user.username notification.Question.tags %}">
+                <button type="button" class="btn btn-warning">
+                        <font color="blue">
+
+                        <i class="far fa-share-square">
+                          {% if notification.Question.tags == 0 %}Department
+                          {% elif notification.Question.tags == 1 %}Clubs
+                          {% elif notification.Question.tags == 2 %}placements
+                          {% elif notification.Question.tags == 3 %}fests
+                          {% elif notification.Question.tags == 4 %}hostel
+                          {% elif notification.Question.tags == 5 %}general{% endif %}<br>
+                        </i>
+                        </font>
+                </button>
+            </a>
+
+
+    </div>
+    <div class="movie_desc">
+
+      <p class="text bdy" word-wrap="break-word" >
+        {{notification.Question.question}}
+         </p></div>
+
+    <div class="movie_social">
+      <ul>
+
+          <li><i class="material-icons">
+              {% if not qv %}
+            <a href = "{% url 'blog:nquesdownvote' notification.id user.username %}"> <img src="{% static "blog/Like.ico" %}" alt="My image" width="25" height="25" ></a>
+        {% else %}
+             <a href = "{% url 'blog:nquesvote' notification.id  user.username %}"> <img src="{% static "blog/Unlike.png" %}" alt="My image" width="25" height="25" ></a>
+        {% endif %}
+
+
+          <a href="{% url 'blog:allvote' notification.Question.id user.username %}"  >{{notification.Question.votes}}</a>&nbsp&nbsp</i></li>
+        <li><i class="material-icons">
+            <button type="button" class="btn btn-default btn-sm">
+                        <i class="far fa-comment-alt"><a href="{% url 'blog:ans' notification.Question.id user.username %}" style="text-decoration: none;">&nbsp{{size}}&nbsp&nbspComment</a></i>
+            </button>
+
+        </i></li>
+
+        <li><i class="material-icons"><div class="float-right">
+            <footer class="blockquote-footer float-right" ><cite title="Source Title">{{notification.Question.created_on}}</cite></footer>
+        </div></i></li>
+      </ul>
+    </div>
+  </div>
+  <div class="blur_back bright_back"></div>
+</div>
+
+</div>
+
+
+
+
+<div class="container ctr" >
+
+    <div class="card">
+
+        <div class="bdy " style="background-color: #347EAF">
+<!--                <h5 class="card-title" style="align-content: flex-start" >Question test</h5>-->
+            <p class="card-text" ><font color = "#000000"><h3>&nbsp&nbspAns. {{notification.Answer.answer}}</h3></font>
+                    </p>
+            <div style="background-color: #CCE5FF">
+            <b><hr  NOSHADE="noshade"></b>
+                {% if not av %}
+                    <a href = "{% url 'blog:nansdownvote' notification.id user.username %}"><img src="{% static "blog/Like.ico" %}" alt="My image" width="25" height="25" ></a>
+                {% else %}
+                    <a href = "{% url 'blog:nansvote' notification.id  user.username %}"><img src="{% static "blog/Unlike.png" %}" alt="My image" width="25" height="25" ></a>
+                {% endif %}
+                <a href="{% url 'blog:allansvote' notification.Answer.id user.username %}"  >{{notification.Answer.votes}} </a>
+
+
+            <footer class=" float-right" >By <cite title="Source Title">
+            <a href="{% url 'blog:userinfo' user.username notification.Answer.User.username %}"><font color = "#000000">{{notification.Answer.User}}</font></a>&nbsp&nbsp</cite></footer><br>
+
+            <footer class="blockquote-footer float-right" ><cite title="Source Title" style="color:white">{{notification.Answer.created_on}}</cite></footer>
+
+            </div>
+
+    </div>
+    </div>
+</div>
+<br>
+
+<div class="card text-center">
+<a href="{% url 'blog:ans' notification.Question.id user.username %}" class="btn btn-primary">See all ans</a>
+</div>
+
+
+
+
+
+
+
+
+
+{% else %}
+  <p>You are not logged in</p>
+  <a href="{% url 'accounts:login' %}">login</a>
+{% endif %}
+
+</body>
+{% endblock body %}

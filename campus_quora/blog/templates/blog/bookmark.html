@@ -1,0 +1,125 @@
+{% extends "blog/base.html" %}
+{% load static %}
+
+{% block title %}BookMarks{% endblock %}
+
+{% block body %}
+{% if user.is_authenticated %}
+
+<body>
+
+<h1 style="color:yellow;font-size: 48px; text-align:center">BookMark</h1>
+
+
+<form class="form-inline my-2 my-lg-0" method="post" action="{% url 'blog:bookmarksearch' user.username %}" >
+      {% csrf_token %}
+
+	        <select class="form-control select2" name="search" >
+                <option value="">Select your Tag</option>
+	           <option value="Department" >Department</option>
+	           <option value="Clubs" >Clubs</option>
+	           <option value="placements" >placements</option>
+	           <option value="fests" >fests</option>
+	           <option value="hostel" >hostel</option>
+	           <option value="general" >general</option>
+	        </select>&nbsp&nbsp
+            <button class="btn btn-outline-success my-2 my-sm-0" type="submit">Search</button>
+</form>
+
+
+
+
+{% for bookmark,v,size in data %}
+<div class="container ctr">
+
+<div class="movie_card card " id="bright">
+  <div class="info_section">
+    <div class="movie_header">
+      {% if bookmark.Question.tags == 0 %}  <img class="locandina" img src="{% static "blog/0.jpg" %}" alt="My image"  />
+      {% elif bookmark.Question.tags == 1 %}<img class="locandina" img src="{% static "blog/1.jpg" %}" alt="My image"  />
+      {% elif bookmark.Question.tags == 2 %}<img class="locandina" img src="{% static "blog/2.jpg" %}" alt="My image"  />
+      {% elif bookmark.Question.tags == 3 %}<img class="locandina" img src="{% static "blog/3.jpg" %}" alt="My image"  />
+      {% elif bookmark.Question.tags == 4 %}<img class="locandina" img src="{% static "blog/4.jpg" %}" alt="My image"  />
+      {% elif bookmark.Question.tags == 5 %}<img class="locandina" img src="{% static "blog/5.jpg" %}" alt="My image"  />
+      {% endif %}
+      <h1>{{bookmark.Question.title }}</h1>
+        <h4>by.- <a href="{% url 'blog:userinfo' user.username bookmark.User.username %}">{{bookmark.Question.User}}</a></h4>
+      <span class="minutes">
+
+          <a href = "{% url 'blog:removebookmark' bookmark.Question.id user.username 2 %}"><img src="{% static "blog/bookmark.png" %}" alt="My image" width="25" height="25" ></a><br>
+
+
+      </span>
+
+<!--        {% if user.username == bookmark.Question.User.username %}-->
+<!--            &nbsp&nbsp-->
+<!--            <button type="button" class="btn btn-default btn-sm">-->
+<!--                <a href="{% url 'blog:deleteques' bookmark.Question.id user.username 4 %}" style="text-decoration: none;"><i class="fas fa-trash"></i></a>-->
+<!--            </button>-->
+<!--        {% endif %}-->
+
+
+        &nbsp&nbsp
+        <a href="{% url 'blog:ssearch' user.username bookmark.Question.tags %}">
+                <button type="button" class="btn btn-warning">
+                        <font color="blue">
+
+                        <i class="far fa-share-square">
+                          {% if bookmark.Question.tags == 0 %}Department
+                          {% elif bookmark.Question.tags == 1 %}Clubs
+                          {% elif bookmark.Question.tags == 2 %}placements
+                          {% elif bookmark.Question.tags == 3 %}fests
+                          {% elif bookmark.Question.tags == 4 %}hostel
+                          {% elif bookmark.Question.tags == 5 %}general{% endif %}<br>
+                        </i>
+                        </font>
+                </button>
+            </a>
+
+
+    </div>
+    <div class="movie_desc">
+
+      <p class="text bdy" word-wrap="break-word" >
+        {{bookmark.Question.question}}
+         </p></div>
+
+    <div class="movie_social">
+      <ul>
+
+          <li><i class="material-icons">
+          {% if not v %}
+                        <a href = "{% url 'blog:quesdownvote' bookmark.Question.id user.username 2 %}"><img src="{% static "blog/Like.ico" %}" alt="My image" width="25" height="25" ></a>
+                 {% else %}
+                        <a href = "{% url 'blog:quesvote' bookmark.Question.id user.username 2 %}"><img src="{% static "blog/Unlike.png" %}" alt="My image" width="25" height="25" ></a>
+                 {% endif %}
+
+          <a href="{% url 'blog:allvote' bookmark.Question.id user.username %}"  >{{bookmark.Question.votes}}</a>&nbsp&nbsp</i></li>
+        <li><i class="material-icons">
+            <button type="button" class="btn btn-default btn-sm">
+                        <i class="far fa-comment-alt"><a href="{% url 'blog:ans' bookmark.Question.id user.username %}" style="text-decoration: none;">&nbsp{{size}}&nbsp&nbspComment</a></i>
+            </button>
+
+        </i></li>
+
+        <li><i class="material-icons"><div class="float-right">
+            <footer class="blockquote-footer float-right" ><cite title="Source Title">{{bookmark.Question.created_on}}</cite></footer>
+        </div></i></li>
+      </ul>
+    </div>
+  </div>
+  <div class="blur_back bright_back"></div>
+</div>
+
+</div>
+{% endfor %}
+
+
+
+{% else %}
+  <p>You are not logged in</p>
+  <a href="{% url 'accounts:login' %}">login</a>
+{% endif %}
+
+</body>
+{% endblock body %}

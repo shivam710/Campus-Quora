@@ -1,0 +1,27 @@
+# print(type(tags[0]))
+            # print('falak')
+            # print(tags)
+            # v = []
+            # b = []
+            # size = []
+            # for ques in questions:
+            #     size.append(len(ques.answer_set.all()))
+            #     a = 1
+            #     for votes in user.quesvotes_set.all():
+            #         if votes.Question.id == ques.id:
+            #             v.append(0)
+            #             a = 0
+            #             break
+            #     if a:
+            #         v.append(1)
+            # 
+            # for ques in questions:
+            #     a = 1
+            #     for bm in user.bookmark_set.all():
+            #         if bm.Question.id == ques.id:
+            #             b.append(0)
+            #             a = 0
+            #             break
+            #     if a:
+            #         b.append(1)
+return render(request, 'blog/home.html',{'user': user, 'questions': questions, 'data': zip(questions, v, b, size)})

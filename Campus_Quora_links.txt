@@ -1,0 +1,16 @@
+---------------------------------------------
+
+LOGIN
+
+https://wsvincent.com/django-user-authentication-tutorial-login-and-logout/?fbclid=IwAR2iVPQPkPDq-wZ1BD1FS-5wiyirXBxiNUxTMvEZp7R97wZe5mh58scKD7g
+https://wsvincent.com/django-user-authentication-tutorial-signup/?fbclid=IwAR2rK1VusbxOcOVwKOQM2N_atvMEgToLmFR_QH3rMhqyFd1Jact7qGgfFJA
+https://simpleisbetterthancomplex.com/tutorial/2017/02/18/how-to-create-user-sign-up-view.html?fbclid=IwAR0P5njnDQ8KZqiqdysGSajtdJQCW8eLeiAmssUU-XFTZoYGEb24haAL4uY
+
+---------------------------------------------
+
+BLOG
+
+https://djangocentral.com/building-a-blog-application-with-django/?fbclid=IwAR0P5njnDQ8KZqiqdysGSajtdJQCW8eLeiAmssUU-XFTZoYGEb24haAL4uY
+https://getbootstrap.com/docs/4.3/components/card/?fbclid=IwAR0ZdAd5TsdTuQ4SqwsJi2K8dbVGjUbVQvmDnF2hNHUrVh9oV8ot8PkjJgU
+
+---------------------------------------------

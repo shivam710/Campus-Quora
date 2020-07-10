@@ -1,0 +1,17 @@
+<!-- templates/registration/login.html -->
+{% extends 'accounts/base.html' %}
+
+{% block title %}Signup{% endblock %}
+
+{% block content %}
+
+<h2>Signup</h2>
+<form method="post" >
+  <p style="color:red;">{{error}}</p>
+  {% csrf_token %}
+  {{ form.as_p }}
+  {{ profile_form.as_p }}
+  <button type="submit">Login</button>
+</form>
+<a href = "{% url 'accounts:login' %}">Already Login</a>
+{% endblock %}

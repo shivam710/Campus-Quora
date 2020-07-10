@@ -1,0 +1,75 @@
+{% extends "blog/base.html" %}
+{% load static %}
+
+
+{% block body %}
+{% if user.is_authenticated %}
+<body>
+
+
+<!--   <form method="post" action="{% url 'blog:search' user.username %}">-->
+<!--       {% csrf_token %}-->
+<!--        <input type="text" name="search_tag" placeholder="SearchQuestionTag">-->
+<!--       <button>Search</button>-->
+<!--   </form>-->
+
+
+
+    {{error_message}}
+
+    {% for ques,v,b in data %}
+<div class="card text-center">
+
+  <div class="card-body border border-black">
+    <h5 class="card-title">{{ques.title }}
+        {% if not b %}
+            <a href = "{% url 'blog:sremovebookmark' ques.id user.username search %}"><img src="{% static "blog/bookmark.png" %}" alt="My image" width="25" height="25" ></a><br>
+       {% else %}
+            <a href = "{% url 'blog:sbookmark' ques.id user.username search %}"> <img src="{% static "blog/Unbookmark.png" %}" alt="My image" width="25" height="25" ></a><br>
+      {% endif %}</h5>
+    <p class="card-text">Q. {{ques.question}}</p>
+      <p class="card-text">by -- {{ques.User}}</p>
+      <p class="card-text">
+          {% if ques.tags == 0 %}Department
+          {% elif ques.tags == 1 %}Clubs
+          {% elif ques.tags == 2 %}placements
+          {% elif ques.tags == 3 %}fests
+          {% elif ques.tags == 4 %}hostel
+          {% elif ques.tags == 5 %}general{% endif %}<br>
+      </p>
+
+
+
+      {% if not v %}
+            <a href = "{% url 'blog:squesdownvote' ques.id user.username search %}"> <img src="{% static "blog/Like.ico" %}" alt="My image" width="25" height="25" ></a>
+       {% else %}
+            <a href = "{% url 'blog:squesvote' ques.id user.username search %}"> <img src="{% static "blog/Unlike.png" %}" alt="My image" width="25" height="25" ></a>
+      {% endif %}
+        &nbsp&nbsp<a href="{% url 'blog:allvote' ques.id user.username %}"  >{{ques.votes}} </a> <br>
+
+
+      <a href="{% url 'blog:ans' ques.id user.username %}" class="btn btn-primary">Ans</a>
+
+
+  </div>
+  <div class="card-footer text-muted border-black">
+    {{ques.created_on}}
+  </div>
+    <br><br>
+</div>
+
+
+-----------------------------
+    {% endfor %}
+
+
+
+
+
+{% else %}
+  <p>You are not logged in</p>
+  <a href="{% url 'accounts:login' %}">login</a>
+{% endif %}
+
+</body>
+{% endblock body %}

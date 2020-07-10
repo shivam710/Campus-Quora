@@ -1,0 +1,113 @@
+{% extends "blog/base.html" %}
+{% load static %}
+
+
+{% block body %}
+{% if user.is_authenticated %}
+
+<body>
+
+<h1 style="color:yellow;font-size: 48px; text-align:center">BookMark</h1>
+
+
+<br><br>
+{% for bookmark,v in data %}
+<div class="container ctr">
+    <div class="card">
+    <div class="card-header text-center">
+        {{bookmark.Question.title }}
+    </div>
+    <div class="card-body">
+        <div class="topright">
+        <a href = "{% url 'blog:removebookmark' bookmark.Question.id user.username 2 %}"><img src="{% static "blog/bookmark.png" %}" alt="My image" width="25" height="25" ></a>
+        </div>
+
+
+        <div class="bdy">
+<!--                <h5 class="card-title" style="align-content: flex-start" >Question test</h5>-->
+                <p class="card-text">Q. {{bookmark.Question.question}}
+                    </p>
+            <b><hr></b>
+                {% if not v %}
+                    <a href = "{% url 'blog:quesdownvote' bookmark.Question.id user.username 2 %}"> <img src="{% static "blog/Like.ico" %}" alt="My image" width="25" height="25" ></a>
+                {% else %}
+                    <a href = "{% url 'blog:quesvote' bookmark.Question.id user.username 2 %}"> <img src="{% static "blog/Unlike.png" %}" alt="My image" width="25" height="25" ></a>
+                {% endif %}
+                <a href="{% url 'blog:allvote' bookmark.Question.id user.username %}"  >{{bookmark.Question.votes}} </a>&nbsp&nbsp
+
+                <button type="button" class="btn btn-default btn-sm">
+                        <a href="{% url 'blog:ans' bookmark.Question.id user.username %}" style="text-decoration: none;"><i class="far fa-comment-alt">&nbspComment</a></i>
+                </button>
+                <button type="button" class="btn btn-default btn-sm">
+                        <i class="far fa-share-square">
+                          {% if bookmark.Question.tags == 0 %}Department
+                          {% elif bookmark.Question.tags == 1 %}Clubs
+                          {% elif bookmark.Question.tags == 2 %}placements
+                          {% elif bookmark.Question.tags == 3 %}fests
+                          {% elif bookmark.Question.tags == 4 %}hostel
+                          {% elif bookmark.Question.tags == 5 %}general{% endif %}
+                        </i>
+                </button>
+            <div class="float-right">
+            <footer class="blockquote-footer" >By <cite title="Source Title">{{bookmark.Question.User}}</cite></footer></div><br>
+            <footer class="blockquote-footer float-right" ><cite title="Source Title">{{bookmark.Question.created_on}}</cite></footer>
+        </div>
+
+    </div>
+    </div>
+</div>
+<br><br>
+{% endfor %}
+
+
+
+
+
+<!--<h1>My BookMarks</h1>-->
+{% for bookmark,v in data %}
+<!--    {{bookmark.Question.question}}<br>-->
+
+    <div class="card text-center">
+
+  <div class="card-body border border-black">
+    <h5 class="card-title">{{bookmark.Question.title }}      <a href = "{% url 'blog:removebookmark' bookmark.Question.id user.username 2 %}"><img src="{% static "blog/bookmark.png" %}" alt="My image" width="25" height="25" ></a><br></h5>
+    <p class="card-text">Q. {{bookmark.Question.question}}</p>
+      <p class="card-text">by -- {{bookmark.Question.User}}</p>
+      <p class="card-text">
+          {% if bookmark.Question.tags == 0 %}Department
+          {% elif bookmark.Question.tags == 1 %}Clubs
+          {% elif bookmark.Question.tags == 2 %}placements
+          {% elif bookmark.Question.tags == 3 %}fests
+          {% elif bookmark.Question.tags == 4 %}hostel
+          {% elif bookmark.Question.tags == 5 %}general{% endif %}<br>
+      </p>
+
+
+
+      {% if not v %}
+            <a href = "{% url 'blog:quesdownvote' bookmark.Question.id user.username 2 %}"> <img src="{% static "blog/Like.ico" %}" alt="My image" width="25" height="25" ></a>
+       {% else %}
+            <a href = "{% url 'blog:quesvote' bookmark.Question.id user.username 2 %}"> <img src="{% static "blog/Unlike.png" %}" alt="My image" width="25" height="25" ></a>
+      {% endif %}
+      <a href="{% url 'blog:allvote' bookmark.Question.id user.username %}"  >{{bookmark.Question.votes}} </a><br>
+
+<!--      <a href = "{% url 'blog:bookmark' bookmark.Question.id user.username 1 %}"> bookmark</a><br>-->
+
+      <a href="{% url 'blog:ans' bookmark.Question.id user.username %}" class="btn btn-primary">Ans</a>
+  </div>
+  <div class="card-footer text-muted border-black">
+    {{bookmark.Question.created_on}}
+  </div>
+    <br><br>
+</div>
+{% endfor %}
+
+
+
+{% else %}
+  <p>You are not logged in</p>
+  <a href="{% url 'accounts:login' %}">login</a>
+{% endif %}
+
+</body>
+{% endblock body %}

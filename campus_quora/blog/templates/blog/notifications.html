@@ -1,0 +1,38 @@
+{% extends "blog/base.html" %}
+{% load static %}
+
+{% block title %}Notifications{% endblock %}
+
+{% block body %}
+{% if user.is_authenticated %}
+
+<body>
+
+<h1 style="color:yellow;font-size: 48px; text-align:center">Notifications</h1>
+<br>
+<div class="container ctr">
+<ul class="list-group">
+{% for noti in notifications %}
+
+{% if noti.who is not user.username %}
+<!--{{noti.who}}&#45;&#45;{{user.username}}<br>-->
+  <p class="card-text" ><font color = "#000000"><li class="list-group-item">
+    <a href="{% url 'blog:userinfo' noti.User.username noti.who %}"><font color = "#3333ff">{{noti.who}}</font></a>
+    commented on your Question -
+    <a href="{% url 'blog:nques' noti.id user.username %}"><font color = "#3333ff">{{noti.Question.title}}</font></a>&nbsp&nbsp&nbsp&nbsp
+    <a href="{% url 'blog:ndelete' noti.id  user.username %}"><font color = "#ff0000"> Delete</font></a>&nbsp&nbsp&nbsp&nbsp{{noti.created_on}}</li></font></p>
+<br>
+{% endif %}
+{% endfor %}
+
+</ul>
+</div>
+
+
+{% else %}
+  <p>You are not logged in</p>
+  <a href="{% url 'accounts:login' %}">login</a>
+{% endif %}
+
+</body>
+{% endblock body %}

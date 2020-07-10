@@ -1,0 +1,26 @@
+{% extends "blog/base.html" %}
+{% load static %}
+
+{% block title %}Likes{% endblock %}
+
+{% block body %}
+{% if user.is_authenticated %}
+
+<br><br>
+
+
+<h1 style="color:yellow;font-size: 48px; text-align:center">Liked By :</h1>
+
+    {% for vote in votes %}
+<p style="font-size:30px">&nbsp&nbsp&nbsp&nbsp &nbsp&nbsp&nbsp&nbsp <a href="{% url 'blog:userinfo' user.username vote.User.username %}"> {{vote.User.username}}</a> </p><br>
+    {% endfor %}
+
+
+
+{% else %}
+  <p>You are not logged in</p>
+  <a href="{% url 'accounts:login' %}">login</a>
+{% endif %}
+
+</body>
+{% endblock body %}

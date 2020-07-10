@@ -1,0 +1,80 @@
+{% extends "blog/base.html" %}
+{% load static %}
+
+
+{% block body %}
+{% if user.is_authenticated %}
+
+<body>
+
+
+<!--   <form method="post" action="{% url 'blog:search' user.username %}">-->
+<!--       {% csrf_token %}-->
+<!--        <input type="text" name="search_tag" placeholder="SearchQuestionTag">-->
+<!--       <button>Search</button>-->
+<!--   </form>-->
+
+
+<h1>My Question</h1>
+{% for ques,v,b,size in data %}
+<div class="container ctr">
+    <div class="card">
+    <div class="card-header text-center">
+        {{ques.title }}
+    </div>
+    <div class="card-body">
+        <div class="topright">
+        {% if not b %}
+            <a href = "{% url 'blog:removebookmark' ques.id user.username 1 %}"><img src="{% static "blog/bookmark.png" %}" alt="My image" width="25" height="25" ></a><br>
+       {% else %}
+            <a href = "{% url 'blog:bookmark' ques.id user.username 1 %}"> <img src="{% static "blog/Unbookmark.png" %}" alt="My image" width="25" height="25" ></a><br>
+      {% endif %}
+        </div>
+
+
+        <div class="bdy">
+                <p class="card-text">Q. {{ques.question}}
+                    </p>
+            <b><hr></b>
+                {% if not v %}
+                        <a href = "{% url 'blog:quesdownvote' ques.id user.username 1 %}"><img src="{% static "blog/Like.ico" %}" alt="My image" width="25" height="25" ></a>
+                 {% else %}
+                        <a href = "{% url 'blog:quesvote' ques.id user.username 1 %}"><img src="{% static "blog/Unlike.png" %}" alt="My image" width="25" height="25" ></a>
+                 {% endif %}
+                <a href="{% url 'blog:allvote' ques.id user.username %}"  >{{ques.votes}}</a>&nbsp&nbsp
+
+                <button type="button" class="btn btn-default btn-sm">
+                        <a href="{% url 'blog:ans' ques.id user.username %}" style="text-decoration: none;"><i class="far fa-comment-alt">&nbspComment</a></i>
+                </button>
+                <button type="button" class="btn btn-default btn-sm">
+                        <i class="far fa-share-square">
+                          {% if ques.tags == 0 %}Department
+                          {% elif ques.tags == 1 %}Clubs
+                          {% elif ques.tags == 2 %}placements
+                          {% elif ques.tags == 3 %}fests
+                          {% elif ques.tags == 4 %}hostel
+                          {% elif ques.tags == 5 %}general{% endif %}<br>
+                        </i>
+                </button>&nbsp&nbsp&nbsp&nbsp
+                <button type="button" class="btn btn-default btn-sm">
+                    <a href="{% url 'blog:deleteques' ques.id user.username %}" style="text-decoration: none;"><i class="fas fa-trash"></i></a>
+                </button>
+            <div class="float-right">
+            <footer class="blockquote-footer" >By <cite title="Source Title">{{ques.User}}</cite></footer></div><br>
+            <footer class="blockquote-footer float-right" ><cite title="Source Title">{{ques.created_on}}</cite></footer>
+        </div>
+
+    </div>
+    </div>
+</div>
+<br><br>
+{% endfor %}
+
+
+{% else %}
+  <p>You are not logged in</p>
+  <a href="{% url 'accounts:login' %}">login</a>
+{% endif %}
+
+</body>
+{% endblock body %}

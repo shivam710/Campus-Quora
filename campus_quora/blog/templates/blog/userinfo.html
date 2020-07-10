@@ -1,0 +1,77 @@
+{% extends "blog/base.html" %}
+{% load static %}
+
+{% block title %}User Info{% endblock %}
+
+{% block body %}
+{% if user.is_authenticated %}
+
+<style>
+
+.card {
+  box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.2);
+  max-width: 300px;
+  margin: auto;
+  text-align: center;
+}
+
+
+
+
+
+
+button:hover, a:hover {
+  opacity: 0.7;
+}
+
+</style>
+
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
+
+<div class="card">
+  <img src="{% static "blog/5.jpg" %}" alt="{% static "blog/5.jpg" %}" style="width:100%">
+    <hr>
+  <h1>{{user1.username}}</h1>
+  <p class="title">{{user1.email}}</p>
+  <p>IIT Guwahati</p>
+  <p>{{user1_.tags}}</p>
+
+
+</div>
+
+
+
+<br>
+
+
+<!--{% if 0 in tags %}-->
+<!--    yes-->
+<!--{% endif %}-->
+
+<!--{% if 1 in tags %}-->
+<!--    yes-->
+<!--{% endif %}-->
+
+<!--{% if 2 in tags %}-->
+<!--    yes-->
+<!--{% endif %}-->
+
+<!--{% if 3 in tags %}-->
+<!--    yes-->
+<!--{% endif %}-->
+
+<!--{% if 4 in tags %}-->
+<!--    yes-->
+<!--{% endif %}-->
+
+<!--{% if 5 in tags %}-->
+<!--    yes-->
+<!--{% endif %}-->
+
+{% else %}
+  <p>You are not logged in</p>
+  <a href="{% url 'accounts:login' %}">login</a>
+{% endif %}
+
+</body>
+{% endblock body %}

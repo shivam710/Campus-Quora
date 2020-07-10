@@ -1,0 +1,189 @@
+{% extends "blog/base.html" %}
+{% load static %}
+
+{% block title %}Answers{% endblock %}
+
+{% block body %}
+{% if user.is_authenticated %}
+
+
+
+<body>
+
+
+<h1 style="color:yellow;font-size: 48px; text-align:center">Question</h1>
+
+<div class="container ctr">
+
+<div class="movie_card card " id="bright">
+  <div class="info_section">
+    <div class="movie_header">
+
+      {% if question.tags == 0 %}  <img class="locandina" img src="{% static "blog/0.jpg" %}" alt="My image"  />
+      {% elif question.tags == 1 %}<img class="locandina" img src="{% static "blog/1.jpg" %}" alt="My image"  />
+      {% elif question.tags == 2 %}<img class="locandina" img src="{% static "blog/2.jpg" %}" alt="My image"  />
+      {% elif question.tags == 3 %}<img class="locandina" img src="{% static "blog/3.jpg" %}" alt="My image"  />
+      {% elif question.tags == 4 %}<img class="locandina" img src="{% static "blog/4.jpg" %}" alt="My image"  />
+      {% elif question.tags == 5 %}<img class="locandina" img src="{% static "blog/5.jpg" %}" alt="My image"  />
+      {% endif %}
+
+      <h1>{{question.title }}</h1>
+        <h4>by.- <a href="{% url 'blog:userinfo' user.username question.User.username %}">{{question.User}}</a></h4>
+      <span class="minutes">
+
+          {% if not qb %}
+            <a href = "{% url 'blog:removebookmark' question.id user.username 4 %}"><img src="{% static "blog/bookmark.png" %}" alt="My image" width="25" height="25" ></a><br>
+       {% else %}
+            <a href = "{% url 'blog:bookmark' question.id user.username 4 %}"> <img src="{% static "blog/Unbookmark.png" %}" alt="My image" width="25" height="25" ></a><br>
+      {% endif %}
+
+      </span>
+
+        {% if user.username == question.User.username %}
+            &nbsp&nbsp
+            <button type="button" class="btn btn-default btn-sm">
+                <a href="{% url 'blog:deleteques' question.id user.username 2 %}" style="text-decoration: none;"><i class="fas fa-trash"></i></a>
+            </button>
+        {% endif %}
+        &nbsp&nbsp&nbsp
+
+
+        <a href="{% url 'blog:ssearch' user.username question.tags %}">
+                <button type="button" class="btn btn-warning">
+                        <font color="blue">
+
+                        <i class="far fa-share-square">
+                          {% if question.tags == 0 %}Department
+                          {% elif question.tags == 1 %}Clubs
+                          {% elif question.tags == 2 %}placements
+                          {% elif question.tags == 3 %}fests
+                          {% elif question.tags == 4 %}hostel
+                          {% elif question.tags == 5 %}general{% endif %}<br>
+                        </i>
+                        </font>
+                </button>
+            </a>
+
+
+    </div>
+    <div class="movie_desc">
+
+      <p class="text bdy" word-wrap="break-word" >
+        {{question.question}}
+         </p></div>
+<!--<h1>&#45;&#45;{{v}}&#45;&#45;</h1>-->
+    <div class="movie_social">
+      <ul>
+
+          <li><i class="material-icons">
+                {% if not  qv %}
+                        <a href = "{% url 'blog:quesdownvote' question.id user.username 4 %}"><img src="{% static "blog/Like.ico" %}" alt="My image" width="25" height="25" ></a>
+                 {% else %}
+                        <a href = "{% url 'blog:quesvote' question.id user.username 4 %}"><img src="{% static "blog/Unlike.png" %}" alt="My image" width="25" height="25" ></a>
+                 {% endif %}
+          <a href="{% url 'blog:allvote' question.id user.username %}"  >{{question.votes}}</a>&nbsp&nbsp</i></li>
+
+        <li><i class="material-icons">
+            <button type="button" class="btn btn-default btn-sm">
+                        <i class="far fa-comment-alt">&nbsp{{size}}&nbsp&nbspComment</i>
+            </button>
+
+        </i></li>
+
+        <li><i class="material-icons"><div class="float-right">
+            <footer class="blockquote-footer float-right" ><cite title="Source Title">{{question.created_on}}</cite></footer>
+        </div></i></li>
+      </ul>
+    </div>
+  </div>
+  <div class="blur_back bright_back"></div>
+</div>
+
+</div>
+
+<div class="container" >
+<form method="post" action="{% url 'blog:ans_add' user.username question.pk 0  %}">
+    {% csrf_token %}
+  <textarea name="answer" minlength=5 rows="3" cols="90" style="font-size: 24px;background-color: #CCE5FF " placeholder="Type your answer here"></textarea>
+  <br>
+  <button class="btn btn-outline-success my-2 my-sm-0" type="submit">ans</button>
+</form>
+</div>
+
+
+
+<br><br>
+
+<h1 style="color:yellow;font-size: 48px; text-align:center">Answers</h1>
+
+<div >
+<form class="form-inline my-2 my-lg-0" method="post" action="{% url 'blog:sortans' question.id user.username %}" >
+      {% csrf_token %}
+<!--	        <label>Select Question Tag</label>-->
+	        <select class="form-control select2" name="search">
+                <option value="">Sort By</option>
+	           <option value="Votes" >Votes</option>
+	           <option value="Date" >Date</option>
+	        </select>&nbsp
+            <button class="btn btn-outline-success my-2 my-sm-0" type="submit">Search</button>
+    </form>
+</div>
+<br>
+
+
+
+
+{% for ans,x in data %}
+<div class="container ctr" >
+
+    <div class="card">
+
+        <div class="bdy " style="background-color: #347EAF">
+<!--                <h5 class="card-title" style="align-content: flex-start" >Question test</h5>-->
+            <p class="card-text" ><font color = "#000000"><h3>&nbsp&nbspAns. {{ans.answer}}</h3></font>
+                    </p>
+            <div style="background-color: #CCE5FF">
+            <b><hr  NOSHADE="noshade"></b>
+                {% if not x %}
+                    <a href = "{% url 'blog:ansdownvote' ans.id user.username 0 %}"><img src="{% static "blog/Like.ico" %}" alt="My image" width="25" height="25" ></a>
+                {% else %}
+                    <a href = "{% url 'blog:ansvote' ans.id user.username 0 %}"><img src="{% static "blog/Unlike.png" %}" alt="My image" width="25" height="25" ></a>
+                {% endif %}
+                <a href="{% url 'blog:allansvote' ans.id user.username %}"  >{{ans.votes}} </a>
+
+                {% if ans.User.username == user.username %}
+                &nbsp&nbsp&nbsp&nbsp&nbsp&nbsp
+                <button type="button" class="btn btn-default btn-sm">
+                    <a href="{% url 'blog:ansdelete' ans.id user.username 1 question.pk %}" style="text-decoration: none;"><i class="fas fa-trash"></i></a>
+                </button>
+                {% endif %}
+
+            <footer class=" float-right" >By <cite title="Source Title">
+                <a href="{% url 'blog:userinfo' user.username ans.User.username %}"><font color = "#000000">{{ans.User}}</font></a>&nbsp&nbsp</cite></footer><br>
+            <footer class="blockquote-footer float-right" ><cite title="Source Title" style="color:white">{{ans.created_on}}</cite></footer>
+
+            </div>
+
+    </div>
+    </div>
+</div>
+<br>
+{% endfor %}
+
+
+<!--   <form method="post" action="{% url 'blog:ans_add' user.username question.pk 0  %}">-->
+<!--    {% csrf_token %}-->
+<!--    <input type="text" name="answer" size="500" min="2">-->
+<!--    <button>ans</button>-->
+<!--    </form>-->
+
+
+
+
+{% else %}
+  <p>You are not logged in</p>
+  <a href="{% url 'accounts:login' %}">login</a>
+{% endif %}
+
+</body>
+{% endblock body %}

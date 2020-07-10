@@ -1,0 +1,49 @@
+{% load static %}
+
+
+<div class="container ctr">
+    <div class="card">
+    <div class="card-header text-center">
+
+        {% block title %}
+        {% endblock title %}
+
+
+    </div>
+    <div class="card-body">
+
+        <div class="topright">
+
+            {% block bookmark %}
+            {% endblock bookmark %}
+
+        <div class="bdy">
+                <p class="card-text">
+                    Q.
+
+                    {% block question %}
+                    {% endblock question %}
+
+                </p>
+            <b><hr></b>
+
+                {% block likes %}
+                {% endblock likes %}
+
+                {% block votes %}
+                {% endblock votes %}
+
+                {% block comment %}
+                {% endblock comment %}
+
+            {% block tag %}
+            {% endblock tag %}
+
+            {% block details %}
+            {% endblock details %}
+        </div>
+
+    </div>
+    </div>
+</div>
+<br><br>
